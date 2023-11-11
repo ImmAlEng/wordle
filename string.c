@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iengels <iengels@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iengels <iengels@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:47:27 by iengels           #+#    #+#             */
-/*   Updated: 2023/11/11 01:39:11 by iengels          ###   ########.fr       */
+/*   Updated: 2023/11/11 03:04:50 by iengels          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@ char	*ft_strdup(const char *s)
 	}
 	dup[i] = '\0';
 	return (dup);
-}
-
-uint32_t ft_strlen(char *s)
-{
-    if (!s)
-        return 0;
-    uint32_t i = 0;
-    while (s[i])
-        i++;
-    return (i);
 }
 
 void	ft_putstr_fd(char *s, int fd)
@@ -127,18 +117,17 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (str);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
 
-	i = 0;
-	while (s[i])
+int ft_strncmp(char *s1, char *s2, size_t n)
+{
+	size_t i = 0;
+	while (s1[i] && s2[i] && i < n)
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
+		if (s1[i] != s2[i])
+			return (1);
 		i++;
 	}
-	if (s[i] == (char)c)
-		return ((char *)&s[i]);
+	if (i == n)
+		return (0);
 	return (0);
 }

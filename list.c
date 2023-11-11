@@ -10,10 +10,10 @@ void    ft_create_w_list(t_data *d)
 
     d->list = malloc(sizeof(t_slist));
     if (!d->list || access("wordlist.txt", R_OK) == -1)
-        ft_clean_exit(d, "Can not create List!\n");
+        ft_clean_exit(d, "Can not create List!\n", 1);
     fd = open("wordlist.txt", O_RDONLY);
     if (fd == -1) 
-        ft_clean_exit(d, "Can not create List!\n");
+        ft_clean_exit(d, "Can not create List!\n", 1);
     while (true)
     {
         buffer = calloc(sizeof(char), 7);
@@ -24,10 +24,10 @@ void    ft_create_w_list(t_data *d)
             break;
         }
         if (!buffer)
-            ft_clean_exit(d, "Can not create List!\n");
+            ft_clean_exit(d, "Can not create List!\n", 1);
         new = ft_slstnew(buffer);
         if (!new)
-            ft_clean_exit(d, "Can not create List!\n");
+            ft_clean_exit(d, "Can not create List!\n", 1);
         ft_slstadd_back(&d->list, new);
         buffer = NULL;
         d->size += 1;

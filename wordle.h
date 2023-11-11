@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
+#include "get_next_line.h"
 
 #ifndef GREEN
 #define GREEN "\033[32m"
@@ -44,7 +45,7 @@ typedef struct s_data
 	char			matrix[6][5];
 }					t_data;
 
-void ft_clean_exit(t_data *d, char *err);
+void ft_clean_exit(t_data *d, char *err, int error);
 
 // list.c
 t_slist				*ft_slstnew(char *str);
@@ -55,9 +56,8 @@ t_slist	            *ft_listlast(t_slist *lst);
 
 // string.c
 char	*ft_strtrim(char const *s1, char const *set);
-uint32_t ft_strlen(char *s);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strdup(const char *s);
-char	*ft_strchr(const char *s, int c);
+int ft_strncmp(char *s1, char *s2, size_t n);
 
 #endif
