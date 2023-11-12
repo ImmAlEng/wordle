@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iengels <iengels@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: iengels <iengels@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:50:03 by iengels           #+#    #+#             */
-/*   Updated: 2023/11/12 06:23:59 by iengels          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:44:27 by iengels          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 bool ft_check_yellow(std::string guess, std::string solution, int index)
 {
     int count = 0;
+    int count_b = 0;
     if (solution.find(guess[index]) == std::string::npos)
         return false;
     for (int i = 0; i < 5; i++)
     {
         if (guess[index] == solution[i])
             count++;
+        if (guess[i] == guess[index])
+            count_b++;
     }
+    if (count == 1 && count_b == 1)
+        return true;
     for (int i = 0; i < index; i++)
     {
         for (int j = 0; j < 5; j++)
