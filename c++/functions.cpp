@@ -25,8 +25,8 @@ bool ft_new_game(void)
 bool ft_gui(std::string message)
 {
 
-    //system("clear");
-    //std::flush(std::cout);
+    system("clear");
+    std::flush(std::cout);
     std::cout << GREEN << WORDLE << RESET << std::endl;
     std::cout << BOLD << YELLOW << message << RESET << std::endl;
     return true;
