@@ -39,10 +39,11 @@ typedef struct s_data
 {
 	struct s_slist	*list;
     int32_t       size;
-	int32_t       nb;
+	int32_t       nb ;
 	int32_t       guess;
 	char			*sol;
 	char			matrix[6][5];
+	int				table[26];
 }					t_data;
 
 void ft_clean_exit(t_data *d, char *err, int error);

@@ -13,7 +13,8 @@ void	ft_clean_exit(t_data *d, char *err, int error)
 			{
 				tmp = d->list;
 				d->list = d->list->next;
-				free(tmp->str);
+				if (tmp->str)
+					free(tmp->str);
 				free(tmp);
 			}
 			free(d->list);
@@ -24,6 +25,34 @@ void	ft_clean_exit(t_data *d, char *err, int error)
 	}
 	ft_putstr_fd(err, 2);
 	exit(error);
+}
+
+bool	ft_check_yellow(t_data *d, char *input, int i)
+{
+	int16_t	check;
+
+	if (!ft_strchr(d->sol, input[i]))
+		return (false);
+	check = d->table[((int)d->sol[i]) - 'a'];
+	for (int j = 0; j < i; j++)
+	{
+		for (int k = 0; k < i; k++)
+		{
+			if (input[j] == d->sol[k] && check > 0)
+			{
+				check--;
+				break;
+			}
+		}
+	}
+	for (int j = i + 1; j < 5; j++)
+	{
+		if (input[i] == d->sol[j] && input[j] == d->sol[j] && check > 0)
+			check--;
+	}
+	if (check > 0)
+		return (true);
+	return (false);
 }
 
 char	*ft_list_data_i(t_slist *l, int32_t nb)
@@ -40,6 +69,8 @@ void	ft_init_data(t_data *d)
 {
 	srand(time(NULL));
 	d->nb = rand() % d->size;
+	if (d->sol)
+		free(d->sol);
 	d->sol = ft_strdup((const char *)ft_list_data_i(d->list, d->nb));
 	if (!d->sol)
 		ft_clean_exit(d, "Error: Bad alloc", 1);
@@ -48,6 +79,10 @@ void	ft_init_data(t_data *d)
 		for (int j = 0; j < 5; j++)
 			d->matrix[i][j] = '_';
 	}
+	for (int i = 0; i < 26; i++)
+		d->table[i] = 0;
+	for (int i = 0; i < 5; i++)
+		d->table[((int)d->sol[i]) - 'a'] += 1;
 	d->guess = 0;
 }
 
@@ -99,7 +134,7 @@ void	ft_print_input(t_data *d, char *input)
 			write(1, &c, 1);
 			ft_putstr_fd(RESET, 1);
 		}
-		else if (ft_strchr(d->sol, input[i]))
+		else if (ft_check_yellow(d, input, i))
 		{
 			ft_putstr_fd(YELLOW, 1);
 			c = input[i] - 32;
@@ -137,31 +172,33 @@ void	ft_get_guess(t_data *d)
 	{
 		ft_putstr_fd("Guess: ", 1);
 		input = get_next_line(1);
-        if (input == NULL)
-            ft_clean_exit(d, "Bye!\n", 0);
+		if (input == NULL)
+			ft_clean_exit(d, "Bye!\n", 0);
 		if (ft_check_input(d, input))
 		{
 			ft_save_input(d, input);
-            if (!ft_strncmp(input, d->sol, 5))
-		    {
-                ft_putstr_fd(GREEN, 1);
-                ft_putstr_fd("You won!\n", 1);
-                ft_putstr_fd(RESET, 1);
-		    	break ;
-		    }
-            else if (d->guess == 6)
-            {
-                ft_putstr_fd(RED, 1);
-                ft_putstr_fd("You lost!\n", 1);
-                ft_putstr_fd(RESET, 1);
-                break ;
-            }
-    	}
+			if (!ft_strncmp(input, d->sol, 5))
+			{
+				ft_putstr_fd(GREEN, 1);
+				ft_putstr_fd("You won!\n", 1);
+				ft_putstr_fd(RESET, 1);
+				break ;
+			}
+			else if (d->guess == 6)
+			{
+				ft_putstr_fd(RED, 1);
+				ft_putstr_fd("You lost!\n", 1);
+				ft_putstr_fd(RESET, 1);
+				break ;
+			}
+		}
 		else
 			ft_putstr_fd("Not Valid!\n", 1);
 		free(input);
 		input = NULL;
 	}
+	if (input)
+		free(input);
 }
 
 void	ft_new_or_exit(t_data *d)
@@ -172,12 +209,12 @@ void	ft_new_or_exit(t_data *d)
 	{
 		ft_putstr_fd("Type New(n) or Exit(e)\n", 1);
 		input = get_next_line(1);
-        if (input == NULL)
-            ft_clean_exit(d, "Bye!\n", 0);
+		if (input == NULL)
+			ft_clean_exit(d, "Bye!\n", 0);
 		if (!ft_strncmp(input, "n", 1))
 		{
 			ft_init_data(d);
-            ft_putstr_fd(d->sol, 1);
+			ft_putstr_fd(d->sol, 1);
 			free(input);
 			break ;
 		}
@@ -213,9 +250,10 @@ int	main(void)
 	if (!d)
 		return (printf("Error: Bad alloc"), 0);
 	d->size = 0;
+	d->sol = NULL;
 	ft_create_w_list(d);
 	ft_init_data(d);
 	ft_game_loop(d);
-    ft_clean_exit(d, "Bye!\n", 0);
+	ft_clean_exit(d, "Bye!\n", 0);
 	return (0);
 }

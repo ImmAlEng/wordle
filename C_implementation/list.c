@@ -5,23 +5,20 @@ void    ft_create_w_list(t_data *d)
 {
     t_slist *new;
     char *buffer;
-    int32_t i;
     int32_t fd;
 
-    d->list = malloc(sizeof(t_slist));
-    if (!d->list || access("wordlist.txt", R_OK) == -1)
+    d->list = NULL;
+    if (access("wordlist.txt", R_OK) == -1)
         ft_clean_exit(d, "Can not create List!\n", 1);
     fd = open("wordlist.txt", O_RDONLY);
     if (fd == -1) 
         ft_clean_exit(d, "Can not create List!\n", 1);
     while (true)
     {
-        buffer = calloc(sizeof(char), 7);
-        i = read(fd, buffer, 6);
-        if (i != 6)
+        buffer = get_next_line(fd);
+        if (!buffer)
         {
-            free(buffer);
-            break;
+			break;
         }
         if (!buffer)
             ft_clean_exit(d, "Can not create List!\n", 1);
