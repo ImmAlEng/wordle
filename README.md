@@ -30,7 +30,7 @@ To get started with the Wordle Rush project, follow these steps:
 
 2. **Build the Project:**
    ```bash
-   g++ -o wordle main.cpp
+   make
    ```
 
 ## Usage
