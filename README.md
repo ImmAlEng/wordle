@@ -1,3 +1,4 @@
+![image](https://github.com/ImmAlEng/wordle/assets/112417315/51b81b35-259c-41d9-88d6-985048f985ab)
 # Wordle Rush Project
 
 ## Overview
